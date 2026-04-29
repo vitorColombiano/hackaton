@@ -305,14 +305,14 @@ function navigate(path) {
 function LinkButton({ to, children, className = "", variant = "primary", icon: Icon = ArrowRight }) {
   const styles =
     variant === "primary"
-      ? "bg-[#00a5b5] text-white hover:bg-[#008996]"
-      : "border border-neutral-200 bg-white text-neutral-700 hover:border-[#00a5b5] hover:text-[#008996]";
+      ? "bg-[#f58220] text-white hover:bg-[#c45100]"
+      : "border border-neutral-200 bg-white text-neutral-700 hover:border-[#f58220] hover:text-[#c45100]";
 
   return (
     <button
       type="button"
       onClick={() => navigate(to)}
-      className={`inline-flex h-10 items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition ${styles} ${className}`}
+      className={`inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-lg px-4 py-2 text-center text-sm font-semibold transition sm:w-auto ${styles} ${className}`}
     >
       {children}
       <Icon className="h-4 w-4" />
@@ -323,9 +323,9 @@ function LinkButton({ to, children, className = "", variant = "primary", icon: I
 function Badge({ children, variant = "neutral" }) {
   const styles = {
     neutral: "bg-neutral-100 text-neutral-700 ring-neutral-200",
-    sponsored: "bg-amber-50 text-amber-800 ring-amber-200",
+    sponsored: "bg-orange-50 text-orange-800 ring-orange-200",
     success: "bg-green-100 text-green-700 ring-green-200",
-    teal: "bg-cyan-50 text-[#008996] ring-cyan-100",
+    teal: "bg-orange-50 text-[#c45100] ring-orange-100",
     dark: "bg-neutral-900 text-white ring-neutral-900",
   };
 
@@ -339,7 +339,7 @@ function Badge({ children, variant = "neutral" }) {
 function MelhorEscolaLogo() {
   return (
     <button type="button" onClick={() => navigate("/")} className="flex items-center gap-3 text-left">
-      <div className="grid h-10 w-10 place-items-center rounded-full bg-[#00a5b5] text-sm font-black text-white">ME</div>
+      <div className="grid h-10 w-10 place-items-center rounded-full bg-[#f58220] text-sm font-black text-white">ME</div>
       <div>
         <p className="text-base font-bold text-neutral-900">Melhor Escola</p>
         <p className="text-xs font-medium text-neutral-500">Sponsored Boost</p>
@@ -360,13 +360,13 @@ function PublicHeader() {
     <header className="sticky top-0 z-20 border-b border-neutral-200 bg-white/95 backdrop-blur">
       <div className="mx-auto flex max-w-7xl flex-col gap-3 px-4 py-4 sm:flex-row sm:items-center sm:justify-between lg:px-6">
         <MelhorEscolaLogo />
-        <nav className="flex flex-wrap items-center gap-2">
+        <nav className="flex w-full items-center gap-2 overflow-x-auto pb-1 sm:w-auto sm:justify-end sm:overflow-visible sm:pb-0">
           {links.map((link) => (
             <button
               type="button"
               key={link.to}
               onClick={() => navigate(link.to)}
-              className="rounded-lg px-3 py-2 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100 hover:text-[#008996]"
+              className="whitespace-nowrap rounded-lg px-3 py-2 text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100 hover:text-[#c45100]"
             >
               {link.label}
             </button>
@@ -394,11 +394,11 @@ function ManagerLayout({ children }) {
       <PublicHeader />
       <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 lg:grid-cols-[240px_1fr] lg:px-6">
         <aside className="h-fit rounded-xl border border-neutral-200 bg-white p-3 shadow-sm">
-          <div className="mb-3 rounded-lg bg-cyan-50 p-3">
-            <p className="text-xs font-semibold uppercase text-[#008996]">Área do gestor</p>
+          <div className="mb-3 rounded-lg bg-orange-50 p-3">
+            <p className="text-xs font-semibold uppercase text-[#c45100]">Área do gestor</p>
             <p className="mt-1 text-sm font-semibold text-neutral-900">Colégio Aurora</p>
           </div>
-          <nav className="space-y-1">
+          <nav className="grid grid-cols-2 gap-1 lg:block lg:space-y-1">
             {items.map((item) => {
               const Icon = item.icon;
               return (
@@ -406,7 +406,7 @@ function ManagerLayout({ children }) {
                   key={item.to}
                   type="button"
                   onClick={() => navigate(item.to)}
-                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100 hover:text-[#008996]"
+                  className="flex w-full items-center gap-2 rounded-lg px-3 py-2 text-left text-sm font-semibold text-neutral-600 transition hover:bg-neutral-100 hover:text-[#c45100]"
                 >
                   <Icon className="h-4 w-4" />
                   {item.label}
@@ -451,7 +451,7 @@ function SponsoredOfferCard({ offer, variant = "large", showSponsoredBadge = tru
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.22 }}
       className={`rounded-xl border bg-white shadow-sm ring-1 ring-inset ${
-        offer.isSponsored ? "border-amber-100 ring-amber-100" : "border-neutral-200 ring-neutral-200"
+        offer.isSponsored ? "border-orange-100 ring-orange-100" : "border-neutral-200 ring-neutral-200"
       }`}
     >
       <div className={compact ? "p-4" : "p-5"}>
@@ -495,7 +495,10 @@ function SponsoredOfferCard({ offer, variant = "large", showSponsoredBadge = tru
             </div>
             {!compact && <p className="mt-1 text-sm font-medium text-green-700">Economia anual de {currency(annualSavings)}</p>}
           </div>
-          <Button className="mt-3 h-10 rounded-lg bg-[#00a5b5] px-4 hover:bg-[#008996] sm:mt-0">
+          <Button
+            onClick={() => navigate(`/ofertas/${offer.id}`)}
+            className="mt-3 h-10 w-full rounded-lg bg-[#f58220] px-4 hover:bg-[#c45100] sm:mt-0 sm:w-auto"
+          >
             Ver bolsa
             <ExternalLink className="ml-2 h-4 w-4" />
           </Button>
@@ -511,13 +514,13 @@ function OrganicOfferCard({ offer, variant = "large" }) {
 
 function SponsoredOffersSection({ title, subtitle, offers }) {
   return (
-    <section className="rounded-xl border border-cyan-100 bg-cyan-50/60 p-4 sm:p-5">
+    <section className="rounded-xl border border-orange-100 bg-orange-50/70 p-4 sm:p-5">
       <div className="mb-4">
-        <p className="text-xs font-semibold uppercase text-[#008996]">Recomendação contextual</p>
+        <p className="text-xs font-semibold uppercase text-[#c45100]">Recomendação contextual</p>
         <h2 className="mt-1 text-xl font-bold text-neutral-900">{title}</h2>
         {subtitle && <p className="mt-1 text-sm text-neutral-600">{subtitle}</p>}
       </div>
-      <div className="grid gap-4 md:grid-cols-3">
+      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         {offers.map((offer) =>
           offer.isSponsored ? (
             <SponsoredOfferCard key={offer.id} offer={offer} variant="compact" />
@@ -534,7 +537,7 @@ function RankingExplanation() {
   return (
     <section className="rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
       <div className="flex items-start gap-3">
-        <div className="rounded-lg bg-cyan-50 p-2 text-[#008996]">
+        <div className="rounded-lg bg-orange-50 p-2 text-[#c45100]">
           <Gauge className="h-5 w-5" />
         </div>
         <div>
@@ -555,12 +558,12 @@ function MetricCard({ icon: Icon, label, value, caption }) {
     <Card className="rounded-xl border-neutral-200 shadow-sm">
       <CardContent className="p-5">
         <div className="flex items-start justify-between gap-3">
-          <div>
+          <div className="min-w-0">
             <p className="text-sm font-medium text-neutral-500">{label}</p>
-            <p className="mt-1 text-2xl font-bold text-neutral-900">{value}</p>
+            <p className="mt-1 break-words text-xl font-bold leading-tight text-neutral-900 sm:text-2xl">{value}</p>
             {caption && <p className="mt-1 text-xs text-neutral-500">{caption}</p>}
           </div>
-          <div className="rounded-lg bg-cyan-50 p-2 text-[#008996]">
+          <div className="shrink-0 rounded-lg bg-orange-50 p-2 text-[#c45100]">
             <Icon className="h-5 w-5" />
           </div>
         </div>
@@ -571,7 +574,7 @@ function MetricCard({ icon: Icon, label, value, caption }) {
 
 function AiRecommendationCard({ compact = false }) {
   return (
-    <Card className="rounded-xl border-cyan-100 bg-white shadow-sm">
+    <Card className="rounded-xl border-orange-100 bg-white shadow-sm">
       <CardContent className="p-5">
         <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
           <div>
@@ -620,7 +623,7 @@ function BudgetSimulator({ budget, setBudget, cpc = 2.4, conversionRate = 0.085 
     <Card className="rounded-xl border-neutral-200 shadow-sm">
       <CardContent className="p-5">
         <div className="flex items-center gap-2">
-          <SlidersHorizontal className="h-5 w-5 text-[#008996]" />
+          <SlidersHorizontal className="h-5 w-5 text-[#c45100]" />
           <h2 className="text-lg font-bold text-neutral-900">Simulador de orçamento</h2>
         </div>
         <label className="mt-5 block text-sm font-semibold text-neutral-700" htmlFor="budget">
@@ -634,7 +637,7 @@ function BudgetSimulator({ budget, setBudget, cpc = 2.4, conversionRate = 0.085 
           step="50"
           value={budget}
           onChange={(event) => setBudget(Number(event.target.value))}
-          className="mt-3 w-full accent-[#00a5b5]"
+          className="mt-3 w-full accent-[#f58220]"
         />
         <div className="mt-3 flex items-center justify-between">
           <span className="text-sm text-neutral-500">R$ 300</span>
@@ -702,7 +705,7 @@ function HomePage() {
               <Sparkles className="h-3 w-3" />
               Protótipo hackathon
             </Badge>
-            <h1 className="mt-5 max-w-4xl text-4xl font-black leading-tight text-neutral-900 md:text-6xl">
+            <h1 className="mt-5 max-w-4xl text-3xl font-black leading-tight text-neutral-900 sm:text-4xl md:text-5xl xl:text-6xl">
               Protótipo — Ofertas Patrocinadas Melhor Escola
             </h1>
             <p className="mt-5 max-w-2xl text-lg leading-8 text-neutral-600">
@@ -736,14 +739,14 @@ function HomePage() {
                 key={card.to}
                 type="button"
                 onClick={() => navigate(card.to)}
-                className="rounded-xl border border-neutral-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#00a5b5] hover:shadow-md"
+                className="rounded-xl border border-neutral-200 bg-white p-5 text-left shadow-sm transition hover:-translate-y-0.5 hover:border-[#f58220] hover:shadow-md"
               >
-                <div className="mb-4 grid h-11 w-11 place-items-center rounded-lg bg-cyan-50 text-[#008996]">
+                <div className="mb-4 grid h-11 w-11 place-items-center rounded-lg bg-orange-50 text-[#c45100]">
                   <Icon className="h-5 w-5" />
                 </div>
                 <h2 className="text-lg font-bold text-neutral-900">{card.title}</h2>
                 <p className="mt-2 text-sm leading-6 text-neutral-600">{card.text}</p>
-                <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-[#008996]">
+                <div className="mt-4 flex items-center gap-1 text-sm font-semibold text-[#c45100]">
                   Abrir rota
                   <ChevronRight className="h-4 w-4" />
                 </div>
@@ -754,7 +757,7 @@ function HomePage() {
 
         <section className="mt-10 rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
           <h2 className="text-2xl font-bold text-neutral-900">O que este protótipo demonstra</h2>
-          <div className="mt-5 grid gap-4 md:grid-cols-5">
+          <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
             {[
               "Nova fonte de receita para Melhor Escola",
               "Valor claro para escolas parceiras",
@@ -802,7 +805,7 @@ function TrafficArticlePage() {
               <BookOpen className="h-3 w-3" />
               Guia de bolsas
             </Badge>
-            <h1 className="mt-4 max-w-3xl text-4xl font-black leading-tight text-neutral-900">
+            <h1 className="mt-4 max-w-3xl text-3xl font-black leading-tight text-neutral-900 sm:text-4xl">
               Melhores escolas em São Paulo: veja opções com bolsas
             </h1>
             <p className="mt-4 max-w-3xl text-lg leading-8 text-neutral-600">
@@ -837,12 +840,12 @@ function TrafficArticlePage() {
                 Ver bolsas
               </LinkButton>
             </div>
-            <div className="rounded-xl border border-amber-200 bg-amber-50 p-5">
+            <div className="rounded-xl border border-orange-200 bg-orange-50 p-5">
               <Badge variant="sponsored">
                 <Megaphone className="h-3 w-3" />
                 Patrocinado
               </Badge>
-              <p className="mt-3 text-sm leading-6 text-amber-900">
+              <p className="mt-3 text-sm leading-6 text-orange-900">
                 Sinalização explícita preserva a confiança: a oferta pode receber destaque, mas não se mistura ao conteúdo editorial sem
                 identificação.
               </p>
@@ -881,7 +884,7 @@ function MarketplaceListingPage() {
         <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
           <aside className="h-fit rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
             <div className="flex items-center gap-2">
-              <Filter className="h-5 w-5 text-[#008996]" />
+              <Filter className="h-5 w-5 text-[#c45100]" />
               <h2 className="font-bold text-neutral-900">Filtros</h2>
             </div>
             {[
@@ -917,7 +920,7 @@ function MarketplaceListingPage() {
                     </div>
                     <div className="border-t border-neutral-200 pt-2 flex justify-between">
                       <span className="font-semibold text-neutral-900">Score final</span>
-                      <span className="font-bold text-[#008996]">{calculateFinalScore(offer)}</span>
+                      <span className="font-bold text-[#c45100]">{calculateFinalScore(offer)}</span>
                     </div>
                   </div>
                 </div>
@@ -930,7 +933,100 @@ function MarketplaceListingPage() {
   );
 }
 
-function CampaignTable() {
+function OfferDetailsPage({ id }) {
+  const offer = mockOffers.find((item) => item.id === id) || mockOffers[0];
+  const [leadCreated, setLeadCreated] = useState(false);
+  const annualSavings = (offer.originalPrice - offer.discountedPrice) * 12;
+
+  return (
+    <div className="min-h-screen bg-neutral-50">
+      <PublicHeader />
+      <PageContainer>
+        <button type="button" onClick={() => navigate("/escolas")} className="mb-5 text-sm font-semibold text-[#c45100]">
+          Voltar para bolsas
+        </button>
+
+        {leadCreated && (
+          <div className="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-800">
+            Interesse registrado no protótipo. A família seria direcionada para o fluxo real de bolsa.
+          </div>
+        )}
+
+        <div className="grid gap-6 lg:grid-cols-[1fr_360px]">
+          <section className="rounded-xl border border-neutral-200 bg-white p-6 shadow-sm">
+            <div className="flex flex-col gap-5 sm:flex-row sm:items-start">
+              <OfferLogo offer={offer} />
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap gap-2">
+                  {offer.isSponsored && (
+                    <Badge variant="sponsored">
+                      <Megaphone className="h-3 w-3" />
+                      Patrocinado
+                    </Badge>
+                  )}
+                  <Badge variant="success">{offer.discountPercentage}% de desconto</Badge>
+                </div>
+                <h1 className="mt-4 text-3xl font-black leading-tight text-neutral-900">{offer.schoolName}</h1>
+                <p className="mt-2 flex items-center gap-1 text-neutral-600">
+                  <MapPin className="h-4 w-4 text-neutral-400" />
+                  {offer.neighborhood}, {offer.city} - {offer.state}
+                </p>
+                <div className="mt-3">
+                  <Rating value={offer.rating} count={offer.reviewCount} />
+                </div>
+              </div>
+            </div>
+
+            <div className="mt-8 grid gap-4 sm:grid-cols-3">
+              <div className="rounded-lg bg-neutral-50 p-4">
+                <p className="text-xs font-semibold uppercase text-neutral-500">Série</p>
+                <p className="mt-1 font-bold text-neutral-900">{offer.grade}</p>
+              </div>
+              <div className="rounded-lg bg-neutral-50 p-4">
+                <p className="text-xs font-semibold uppercase text-neutral-500">Mensalidade com bolsa</p>
+                <p className="mt-1 font-bold text-neutral-900">{currency(offer.discountedPrice)}</p>
+              </div>
+              <div className="rounded-lg bg-neutral-50 p-4">
+                <p className="text-xs font-semibold uppercase text-neutral-500">Economia anual</p>
+                <p className="mt-1 font-bold text-green-700">{currency(annualSavings)}</p>
+              </div>
+            </div>
+
+            <div className="mt-8 rounded-xl border border-orange-100 bg-orange-50 p-5">
+              <div className="flex items-start gap-3">
+                <School className="mt-1 h-5 w-5 text-[#c45100]" />
+                <div>
+                  <h2 className="font-bold text-neutral-900">Fluxo de bolsa simulado</h2>
+                  <p className="mt-2 text-sm leading-6 text-neutral-700">
+                    Esta tela fecha a jornada do botão Ver bolsa. Em produção, o usuário seguiria para cadastro, confirmação de disponibilidade
+                    e geração do voucher de bolsa.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <aside className="h-fit rounded-xl border border-neutral-200 bg-white p-5 shadow-sm">
+            <p className="text-sm font-semibold text-neutral-500">A partir de</p>
+            <div className="mt-1 flex flex-wrap items-baseline gap-2">
+              <span className="text-3xl font-black text-neutral-900">{currency(offer.discountedPrice)}</span>
+              <span className="text-sm text-neutral-400 line-through">{currency(offer.originalPrice)}</span>
+            </div>
+            <p className="mt-2 text-sm font-semibold text-green-700">{offer.discountPercentage}% de desconto garantido</p>
+            <Button onClick={() => setLeadCreated(true)} className="mt-5 h-11 w-full rounded-lg bg-[#f58220] hover:bg-[#c45100]">
+              Solicitar contato
+            </Button>
+            <LinkButton to="/escolas" variant="secondary" className="mt-3 w-full" icon={Search}>
+              Ver outras bolsas
+            </LinkButton>
+          </aside>
+        </div>
+      </PageContainer>
+    </div>
+  );
+}
+
+function CampaignTable({ campaigns, highlightedCampaignId, onToggleStatus }) {
   return (
     <Card className="rounded-xl border-neutral-200 shadow-sm">
       <CardContent className="p-0">
@@ -938,10 +1034,10 @@ function CampaignTable() {
           <h2 className="text-lg font-bold text-neutral-900">Tabela de campanhas</h2>
         </div>
         <div className="overflow-x-auto">
-          <table className="w-full min-w-[860px] text-left text-sm">
+          <table className="w-full min-w-[960px] text-left text-sm">
             <thead className="bg-neutral-50 text-xs uppercase text-neutral-500">
               <tr>
-                {["Nome", "Oferta", "Status", "Orçamento", "Gasto", "Cliques", "Leads", "CTR", "ROI", ""].map((header) => (
+                {["Nome", "Oferta", "Status", "Orçamento", "Gasto", "Cliques", "Leads", "CTR", "ROI", "Ações"].map((header) => (
                   <th key={header} className="px-5 py-3 font-semibold">
                     {header}
                   </th>
@@ -949,10 +1045,10 @@ function CampaignTable() {
               </tr>
             </thead>
             <tbody className="divide-y divide-neutral-200">
-              {mockCampaigns.map((campaign) => {
+              {campaigns.map((campaign) => {
                 const offer = getOffer(campaign.offerId);
                 return (
-                  <tr key={campaign.id} className="bg-white">
+                  <tr key={campaign.id} className={campaign.id === highlightedCampaignId ? "bg-orange-50" : "bg-white"}>
                     <td className="px-5 py-4 font-semibold text-neutral-900">{campaign.name}</td>
                     <td className="px-5 py-4 text-neutral-600">{offer.grade}</td>
                     <td className="px-5 py-4">
@@ -967,13 +1063,29 @@ function CampaignTable() {
                     <td className="px-5 py-4 text-neutral-700">{campaign.ctr.toFixed(2)}%</td>
                     <td className="px-5 py-4 font-semibold text-neutral-900">{campaign.estimatedRoi.toFixed(1)}x</td>
                     <td className="px-5 py-4">
-                      <button
-                        type="button"
-                        onClick={() => navigate(`/gestor/campanhas/${campaign.id}`)}
-                        className="font-semibold text-[#008996] hover:underline"
-                      >
-                        Ver detalhe
-                      </button>
+                      <div className="flex min-w-44 flex-wrap gap-3">
+                        <button
+                          type="button"
+                          onClick={() => onToggleStatus(campaign.id)}
+                          className="font-semibold text-neutral-700 hover:text-[#c45100]"
+                        >
+                          {campaign.status === "active" ? "Pausar" : "Retomar"}
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => navigate(`/gestor/campanhas/${campaign.id}/editar`)}
+                          className="font-semibold text-[#c45100] hover:underline"
+                        >
+                          Editar
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => navigate(`/gestor/campanhas/${campaign.id}`)}
+                          className="font-semibold text-[#c45100] hover:underline"
+                        >
+                          Ver detalhe
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 );
@@ -994,7 +1106,7 @@ function CampaignCard({ campaign }) {
     <button
       type="button"
       onClick={() => navigate(`/gestor/campanhas/${campaign.id}`)}
-      className="rounded-xl border border-neutral-200 bg-white p-5 text-left shadow-sm transition hover:border-[#00a5b5] hover:shadow-md"
+      className="rounded-xl border border-neutral-200 bg-white p-5 text-left shadow-sm transition hover:border-[#f58220] hover:shadow-md"
     >
       <div className="flex items-start justify-between gap-3">
         <div>
@@ -1007,7 +1119,7 @@ function CampaignCard({ campaign }) {
         <ChevronRight className="h-5 w-5 text-neutral-400" />
       </div>
       <div className="mt-5 h-2 rounded-full bg-neutral-100">
-        <div className="h-2 rounded-full bg-[#00a5b5]" style={{ width: `${Math.min(progress, 100)}%` }} />
+        <div className="h-2 rounded-full bg-[#f58220]" style={{ width: `${Math.min(progress, 100)}%` }} />
       </div>
       <div className="mt-3 flex justify-between text-sm">
         <span className="text-neutral-500">Gasto {currency(campaign.spent)}</span>
@@ -1017,9 +1129,9 @@ function CampaignCard({ campaign }) {
   );
 }
 
-function ManagerDashboardPage() {
-  const activeCampaigns = mockCampaigns.filter((campaign) => campaign.status === "active");
-  const totals = mockCampaigns.reduce(
+function ManagerDashboardPage({ campaigns, createdCampaignId, onToggleCampaignStatus }) {
+  const activeCampaigns = campaigns.filter((campaign) => campaign.status === "active");
+  const totals = campaigns.reduce(
     (acc, campaign) => ({
       spent: acc.spent + campaign.spent,
       clicks: acc.clicks + campaign.clicks,
@@ -1028,10 +1140,10 @@ function ManagerDashboardPage() {
     }),
     { spent: 0, clicks: 0, leads: 0, impressions: 0 },
   );
-  const ctr = (totals.clicks / totals.impressions) * 100;
-  const averageCpc = totals.spent / totals.clicks;
+  const ctr = totals.impressions ? (totals.clicks / totals.impressions) * 100 : 0;
+  const averageCpc = totals.clicks ? totals.spent / totals.clicks : 0;
   const revenue = totals.leads * 420;
-  const roi = revenue / totals.spent;
+  const roi = totals.spent ? revenue / totals.spent : 0;
 
   return (
     <ManagerLayout>
@@ -1045,7 +1157,13 @@ function ManagerDashboardPage() {
         </LinkButton>
       </div>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+      {createdCampaignId && (
+        <div className="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-800">
+          Alteração aplicada com sucesso e campanha destacada na tabela.
+        </div>
+      )}
+
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <MetricCard icon={Wallet} label="Receita estimada gerada" value={currency(revenue)} caption="leads x ticket mockado" />
         <MetricCard icon={MousePointerClick} label="Cliques" value={totals.clicks} caption="mês atual" />
         <MetricCard icon={Users} label="Leads" value={totals.leads} caption="cadastros interessados" />
@@ -1068,7 +1186,7 @@ function ManagerDashboardPage() {
       </section>
 
       <section className="mt-6">
-        <CampaignTable />
+        <CampaignTable campaigns={campaigns} highlightedCampaignId={createdCampaignId} onToggleStatus={onToggleCampaignStatus} />
       </section>
     </ManagerLayout>
   );
@@ -1083,7 +1201,7 @@ function OfferSelectionList({ selectedOffer, setSelectedOffer }) {
           key={offer.id}
           onClick={() => setSelectedOffer(offer.id)}
           className={`flex w-full gap-3 rounded-xl border bg-white p-4 text-left transition ${
-            selectedOffer === offer.id ? "border-[#00a5b5] ring-2 ring-cyan-100" : "border-neutral-200 hover:border-[#00a5b5]"
+            selectedOffer === offer.id ? "border-[#f58220] ring-2 ring-orange-100" : "border-neutral-200 hover:border-[#f58220]"
           }`}
         >
           <OfferLogo offer={offer} />
@@ -1100,13 +1218,13 @@ function OfferSelectionList({ selectedOffer, setSelectedOffer }) {
   );
 }
 
-function CampaignCreatePage() {
+function CampaignCreatePage({ onCreateCampaign }) {
   const [selectedOffer, setSelectedOffer] = useState("offer-1");
   const [objective, setObjective] = useState("Mais leads");
   const [budget, setBudget] = useState(900);
   const [cpc, setCpc] = useState(2.4);
   const [period, setPeriod] = useState("30 dias");
-  const [surfaces, setSurfaces] = useState(["Artigos", "PLP", "Páginas de escola"]);
+  const [surfaces, setSurfaces] = useState(["Artigos", "PLP", "Página da escola"]);
   const [success, setSuccess] = useState(false);
   const offer = getOffer(selectedOffer);
   const estimatedClicks = Math.round(budget / cpc);
@@ -1117,10 +1235,33 @@ function CampaignCreatePage() {
     setSurfaces((current) => (current.includes(surface) ? current.filter((item) => item !== surface) : [...current, surface]));
   }
 
+  function activateCampaign() {
+    const now = Date.now();
+    const newCampaign = {
+      id: `campaign-${now}`,
+      name: `${objective} - ${offer.grade} - ${offer.neighborhood}`,
+      offerId: offer.id,
+      status: "active",
+      monthlyBudget: budget,
+      spent: 0,
+      impressions: Math.round(estimatedClicks * 64),
+      clicks: estimatedClicks,
+      leads: estimatedLeads,
+      ctr: 1.56,
+      averageCpc: cpc,
+      estimatedRoi: objective === "Maximizar ROI" ? 3.9 : objective === "Mais leads" ? 3.4 : 2.8,
+      surfaces,
+    };
+
+    onCreateCampaign(newCampaign);
+    setSuccess(true);
+    navigate("/gestor");
+  }
+
   return (
     <ManagerLayout>
       <div className="mb-6">
-        <button type="button" onClick={() => navigate("/gestor")} className="text-sm font-semibold text-[#008996]">
+        <button type="button" onClick={() => navigate("/gestor")} className="text-sm font-semibold text-[#c45100]">
           Voltar para o gestor
         </button>
         <h1 className="mt-3 text-3xl font-black text-neutral-900">Criar campanha patrocinada</h1>
@@ -1158,7 +1299,7 @@ function CampaignCreatePage() {
                     key={item}
                     onClick={() => setObjective(item)}
                     className={`rounded-lg border px-4 py-3 text-sm font-semibold transition ${
-                      objective === item ? "border-[#00a5b5] bg-cyan-50 text-[#008996]" : "border-neutral-200 bg-white text-neutral-700"
+                      objective === item ? "border-[#f58220] bg-orange-50 text-[#c45100]" : "border-neutral-200 bg-white text-neutral-700"
                     }`}
                   >
                     {item}
@@ -1212,13 +1353,13 @@ function CampaignCreatePage() {
               <div className="mt-5">
                 <p className="text-sm font-semibold text-neutral-700">Superfícies de exibição</p>
                 <div className="mt-3 flex flex-wrap gap-2">
-                  {["Artigos", "PLP", "Páginas de escola"].map((surface) => (
+                  {["Artigos", "PLP", "Página da escola"].map((surface) => (
                     <button
                       key={surface}
                       type="button"
                       onClick={() => toggleSurface(surface)}
                       className={`rounded-lg border px-3 py-2 text-sm font-semibold ${
-                        surfaces.includes(surface) ? "border-[#00a5b5] bg-cyan-50 text-[#008996]" : "border-neutral-200 bg-white text-neutral-600"
+                        surfaces.includes(surface) ? "border-[#f58220] bg-orange-50 text-[#c45100]" : "border-neutral-200 bg-white text-neutral-600"
                       }`}
                     >
                       {surface}
@@ -1261,13 +1402,13 @@ function CampaignCreatePage() {
                 </div>
                 <div className="border-t border-neutral-200 pt-3 flex justify-between">
                   <span className="font-semibold text-neutral-900">Custo por lead</span>
-                  <span className="font-bold text-[#008996]">{currency(estimatedCpl)}</span>
+                  <span className="font-bold text-[#c45100]">{currency(estimatedCpl)}</span>
                 </div>
               </div>
               <div className="mt-5">
                 <SponsoredOfferCard offer={{ ...offer, isSponsored: true, sponsoredBoost: 12 }} variant="compact" />
               </div>
-              <Button onClick={() => setSuccess(true)} className="mt-5 h-11 w-full rounded-lg bg-[#00a5b5] hover:bg-[#008996]">
+              <Button onClick={activateCampaign} className="mt-5 h-11 w-full rounded-lg bg-[#f58220] hover:bg-[#c45100]">
                 Ativar campanha mockada
               </Button>
             </CardContent>
@@ -1285,7 +1426,7 @@ function PerformanceChartMock() {
     <Card className="rounded-xl border-neutral-200 shadow-sm">
       <CardContent className="p-5">
         <div className="mb-5 flex items-center gap-2">
-          <LineChart className="h-5 w-5 text-[#008996]" />
+          <LineChart className="h-5 w-5 text-[#c45100]" />
           <h2 className="text-lg font-bold text-neutral-900">Evolução diária</h2>
         </div>
         <div className="flex h-56 items-end gap-3">
@@ -1293,7 +1434,7 @@ function PerformanceChartMock() {
             <div key={item.day} className="flex flex-1 flex-col items-center gap-2">
               <div className="flex h-44 w-full items-end rounded-lg bg-neutral-50 px-2">
                 <div
-                  className="w-full rounded-t bg-[#00a5b5]"
+                  className="w-full rounded-t bg-[#f58220]"
                   style={{ height: `${Math.max(12, (item.clicks / maxClicks) * 100)}%` }}
                   title={`${item.clicks} cliques, ${item.leads} leads`}
                 />
@@ -1307,16 +1448,51 @@ function PerformanceChartMock() {
   );
 }
 
-function CampaignDetailsPage({ id }) {
-  const campaign = mockCampaigns.find((item) => item.id === id) || mockCampaigns[0];
+function CampaignDetailsPage({ id, campaigns, onUpdateCampaign, onToggleCampaignStatus, startEditing = false }) {
+  const campaign = campaigns.find((item) => item.id === id) || campaigns[0] || mockCampaigns[0];
   const offer = getOffer(campaign.offerId);
-  const cpl = campaign.spent / campaign.leads;
+  const cpl = campaign.leads ? campaign.spent / campaign.leads : 0;
+  const [isEditing, setIsEditing] = useState(startEditing);
+  const [editBudget, setEditBudget] = useState(campaign.monthlyBudget);
+  const [editCpc, setEditCpc] = useState(campaign.averageCpc);
+  const [editSurfaces, setEditSurfaces] = useState(campaign.surfaces);
+  const [saved, setSaved] = useState(false);
+
+  useEffect(() => {
+    setIsEditing(startEditing);
+    setEditBudget(campaign.monthlyBudget);
+    setEditCpc(campaign.averageCpc);
+    setEditSurfaces(campaign.surfaces);
+    setSaved(false);
+  }, [campaign.id, campaign.monthlyBudget, campaign.averageCpc, campaign.surfaces, startEditing]);
+
+  function toggleEditSurface(surface) {
+    setEditSurfaces((current) => (current.includes(surface) ? current.filter((item) => item !== surface) : [...current, surface]));
+  }
+
+  function saveCampaignChanges() {
+    const clicks = Math.max(1, Math.round(Number(editBudget) / Number(editCpc)));
+    const leads = Math.max(1, Math.round(clicks * 0.085));
+    onUpdateCampaign(campaign.id, {
+      monthlyBudget: Number(editBudget),
+      averageCpc: Number(editCpc),
+      clicks,
+      leads,
+      impressions: Math.round(clicks * 64),
+      ctr: 1.56,
+      estimatedRoi: Number(editBudget) >= campaign.monthlyBudget ? campaign.estimatedRoi + 0.2 : Math.max(1.8, campaign.estimatedRoi - 0.1),
+      surfaces: editSurfaces,
+    });
+    setSaved(true);
+    setIsEditing(false);
+    navigate(`/gestor/campanhas/${campaign.id}`);
+  }
 
   return (
     <ManagerLayout>
       <div className="mb-6 flex flex-col gap-4 lg:flex-row lg:items-start lg:justify-between">
         <div>
-          <button type="button" onClick={() => navigate("/gestor")} className="text-sm font-semibold text-[#008996]">
+          <button type="button" onClick={() => navigate("/gestor")} className="text-sm font-semibold text-[#c45100]">
             Voltar para campanhas
           </button>
           <div className="mt-3 flex flex-wrap items-center gap-3">
@@ -1327,12 +1503,34 @@ function CampaignDetailsPage({ id }) {
             Oferta vinculada: {offer.schoolName} - {offer.grade}
           </p>
         </div>
-        <LinkButton to="/gestor/campanhas/nova" icon={Plus}>
-          Duplicar campanha
-        </LinkButton>
+        <div className="flex flex-wrap gap-3">
+          <button
+            type="button"
+            onClick={() => onToggleCampaignStatus(campaign.id)}
+            className="inline-flex min-h-10 w-full items-center justify-center rounded-lg border border-neutral-200 bg-white px-4 py-2 text-sm font-semibold text-neutral-700 transition hover:border-[#f58220] hover:text-[#c45100] sm:w-auto"
+          >
+            {campaign.status === "active" ? "Pausar campanha" : "Retomar campanha"}
+          </button>
+          <button
+            type="button"
+            onClick={() => setIsEditing(true)}
+            className="inline-flex min-h-10 w-full items-center justify-center rounded-lg bg-[#f58220] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#c45100] sm:w-auto"
+          >
+            Editar campanha
+          </button>
+          <LinkButton to="/gestor/campanhas/nova" icon={Plus}>
+            Duplicar campanha
+          </LinkButton>
+        </div>
       </div>
 
-      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-6">
+      {saved && (
+        <div className="mb-6 rounded-xl border border-green-200 bg-green-50 p-4 text-sm font-semibold text-green-800">
+          Campanha atualizada com sucesso.
+        </div>
+      )}
+
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
         <MetricCard icon={Wallet} label="Investimento" value={currency(campaign.monthlyBudget)} caption="orçamento mensal" />
         <MetricCard icon={PieChart} label="Gasto" value={currency(campaign.spent)} caption="consumido no mês" />
         <MetricCard icon={MousePointerClick} label="Cliques" value={campaign.clicks} caption="total" />
@@ -1341,10 +1539,69 @@ function CampaignDetailsPage({ id }) {
         <MetricCard icon={Target} label="CPC médio" value={currency(campaign.averageCpc)} caption={`CPL ${currency(cpl)}`} />
       </section>
 
+      {isEditing && (
+        <Card className="mt-6 rounded-xl border-orange-100 shadow-sm">
+          <CardContent className="p-5">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <Badge variant="teal">Modo edição</Badge>
+                <h2 className="mt-2 text-xl font-bold text-neutral-900">Editar campanha</h2>
+              </div>
+              <button type="button" onClick={() => setIsEditing(false)} className="text-sm font-semibold text-neutral-500 hover:text-neutral-900">
+                Cancelar edição
+              </button>
+            </div>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2">
+              <label className="text-sm font-semibold text-neutral-700">
+                Orçamento mensal
+                <input
+                  type="number"
+                  min="300"
+                  value={editBudget}
+                  onChange={(event) => setEditBudget(Number(event.target.value))}
+                  className="mt-2 h-11 w-full rounded-lg border border-neutral-200 px-3 text-sm"
+                />
+              </label>
+              <label className="text-sm font-semibold text-neutral-700">
+                CPC máximo
+                <input
+                  type="number"
+                  min="1"
+                  step="0.1"
+                  value={editCpc}
+                  onChange={(event) => setEditCpc(Number(event.target.value))}
+                  className="mt-2 h-11 w-full rounded-lg border border-neutral-200 px-3 text-sm"
+                />
+              </label>
+            </div>
+            <div className="mt-5">
+              <p className="text-sm font-semibold text-neutral-700">Superfícies de exibição</p>
+              <div className="mt-3 flex flex-wrap gap-2">
+                {["Artigos", "PLP", "Página da escola"].map((surface) => (
+                  <button
+                    key={surface}
+                    type="button"
+                    onClick={() => toggleEditSurface(surface)}
+                    className={`rounded-lg border px-3 py-2 text-sm font-semibold ${
+                      editSurfaces.includes(surface) ? "border-[#f58220] bg-orange-50 text-[#c45100]" : "border-neutral-200 bg-white text-neutral-600"
+                    }`}
+                  >
+                    {surface}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <Button onClick={saveCampaignChanges} className="mt-5 h-11 w-full rounded-lg bg-[#f58220] hover:bg-[#c45100] sm:w-auto">
+              Salvar alterações
+            </Button>
+          </CardContent>
+        </Card>
+      )}
+
       <section className="mt-6 grid gap-6 xl:grid-cols-[1fr_360px]">
         <div className="space-y-6">
           <PerformanceChartMock />
-          <Card className="rounded-xl border-cyan-100 shadow-sm">
+          <Card className="rounded-xl border-orange-100 shadow-sm">
             <CardContent className="p-5">
               <Badge variant="teal">
                 <Sparkles className="h-3 w-3" />
@@ -1363,7 +1620,7 @@ function CampaignDetailsPage({ id }) {
           <Card className="rounded-xl border-neutral-200 shadow-sm">
             <CardContent className="p-5">
               <div className="flex items-center gap-2">
-                <Eye className="h-5 w-5 text-[#008996]" />
+                <Eye className="h-5 w-5 text-[#c45100]" />
                 <h2 className="text-lg font-bold text-neutral-900">Onde sua oferta apareceu</h2>
               </div>
               <div className="mt-4 space-y-3">
@@ -1380,7 +1637,7 @@ function CampaignDetailsPage({ id }) {
           <Card className="rounded-xl border-neutral-200 shadow-sm">
             <CardContent className="p-5">
               <h2 className="text-lg font-bold text-neutral-900">ROI estimado</h2>
-              <p className="mt-2 text-4xl font-black text-[#008996]">{campaign.estimatedRoi.toFixed(1)}x</p>
+              <p className="mt-2 text-3xl font-black text-[#c45100] sm:text-4xl">{campaign.estimatedRoi.toFixed(1)}x</p>
               <p className="mt-2 text-sm leading-6 text-neutral-600">Cálculo mockado para demonstrar transparência de performance no gestor.</p>
             </CardContent>
           </Card>
@@ -1421,15 +1678,69 @@ function usePathname() {
 
 export default function MelhorEscolaAdsPrototype() {
   const pathname = usePathname();
+  const [campaigns, setCampaigns] = useState(mockCampaigns);
+  const [createdCampaignId, setCreatedCampaignId] = useState(null);
+
+  function handleCreateCampaign(campaign) {
+    setCampaigns((current) => [campaign, ...current]);
+    setCreatedCampaignId(campaign.id);
+  }
+
+  function handleToggleCampaignStatus(id) {
+    setCampaigns((current) =>
+      current.map((campaign) =>
+        campaign.id === id ? { ...campaign, status: campaign.status === "active" ? "paused" : "active" } : campaign,
+      ),
+    );
+    setCreatedCampaignId(null);
+  }
+
+  function handleUpdateCampaign(id, updates) {
+    setCampaigns((current) => current.map((campaign) => (campaign.id === id ? { ...campaign, ...updates } : campaign)));
+    setCreatedCampaignId(id);
+  }
 
   if (pathname === "/") return <HomePage />;
   if (pathname === "/artigo/melhores-escolas-em-sao-paulo") return <TrafficArticlePage />;
   if (pathname === "/escolas") return <MarketplaceListingPage />;
-  if (pathname === "/gestor") return <ManagerDashboardPage />;
-  if (pathname === "/gestor/campanhas/nova") return <CampaignCreatePage />;
+  if (pathname === "/gestor") {
+    return (
+      <ManagerDashboardPage
+        campaigns={campaigns}
+        createdCampaignId={createdCampaignId}
+        onToggleCampaignStatus={handleToggleCampaignStatus}
+      />
+    );
+  }
+  if (pathname === "/gestor/campanhas/nova") return <CampaignCreatePage onCreateCampaign={handleCreateCampaign} />;
+
+  const offerMatch = pathname.match(/^\/ofertas\/([^/]+)$/);
+  if (offerMatch) return <OfferDetailsPage id={offerMatch[1]} />;
+
+  const campaignEditMatch = pathname.match(/^\/gestor\/campanhas\/([^/]+)\/editar$/);
+  if (campaignEditMatch) {
+    return (
+      <CampaignDetailsPage
+        id={campaignEditMatch[1]}
+        campaigns={campaigns}
+        onUpdateCampaign={handleUpdateCampaign}
+        onToggleCampaignStatus={handleToggleCampaignStatus}
+        startEditing
+      />
+    );
+  }
 
   const campaignMatch = pathname.match(/^\/gestor\/campanhas\/([^/]+)$/);
-  if (campaignMatch) return <CampaignDetailsPage id={campaignMatch[1]} />;
+  if (campaignMatch) {
+    return (
+      <CampaignDetailsPage
+        id={campaignMatch[1]}
+        campaigns={campaigns}
+        onUpdateCampaign={handleUpdateCampaign}
+        onToggleCampaignStatus={handleToggleCampaignStatus}
+      />
+    );
+  }
 
   return <NotFoundPage />;
 }
